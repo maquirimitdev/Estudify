@@ -5,6 +5,24 @@
 <link rel="stylesheet" href="{{ asset('assets/signup.css') }}">
 
 <div class="container">
+  <div class="mt-5">
+    @if($errors->any())
+    <div class ="col-12">
+      @foreach($errors->all() as $error)
+      <div class= "alert alert-danger"> {{$error}}</div>
+      @endforeach
+    </div>
+    @endif
+    
+    @if(session()->has('error'))
+    <div class="alert alert-danger">{{session('error')}}</div>
+    @endif
+
+    @if(session()->has('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+    @endif
+
+  </div>
     <form action="{{route('register.post')}}" method="POST" id="signupForm" class="signup-form">
       @csrf
       <h2>Sign Up</h2>
@@ -27,7 +45,6 @@
       <button type="submit">Sign Up</button>
       <a href="login" class="login-form">Already have an account? Log in</a>
     </form>
-
   </div>
 
 

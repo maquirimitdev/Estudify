@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
+use Illuminate\Session\SessionManager;
+
+
 
 class authController extends Controller
 {
@@ -33,13 +40,25 @@ class authController extends Controller
     function registerPost(Request $request){
         $request->validate([
             'name' => 'required',
-            'email' => 'required'|'email'|'unique:users',
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
             'password' => 'required',
         ]);
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
-        $data['password'] = $request->password;
+        $data['password'] = Hash::make($request->password);
+        $user =User::create($data);
 
+        if(!$user){
+            return redirect(route('register'))->with("error", "Register failed, try again");
+        }
+        return redirect(route('login'))->with("success","Registration success, Login to access the app");
+
+    }
+
+    function loguout(SessionManager $sessionManager){
+        $sessionManager->flush();
+        Auth::logout();
+        return redirect(route('login'));
     }
 }
