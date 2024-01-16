@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="{{ asset('assets/signup.css') }}">
 
 <div class="container">
-  <div class="mt-5">
+  <div class="mt-0">
     @if($errors->any())
-    <div class ="col-12">
+    <div class ="col-10">
       @foreach($errors->all() as $error)
       <div class= "alert alert-danger"> {{$error}}</div>
       @endforeach
@@ -28,11 +28,11 @@
       <h2>Sign Up</h2>
       <div class="input-group">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" required>
+        <input type="text" name="name" id="name" value="{{old('name')}}"required>
       </div>
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email" value="{{old('email')}}" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>

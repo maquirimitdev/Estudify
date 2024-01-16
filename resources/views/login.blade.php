@@ -35,8 +35,8 @@
         <input type="password" name="password" id="password" required>
       </div>
       <button type="submit">Login</button>
-      <a href="r" class="forgot-password">Forgot Password?</a>
-      <p class="signup-text">Don't have an account?<a href="/register" class="signup-form">Sign Up</a></p>
+      <a href="{{route('forget.password')}}" class="forgot-password">Forgot Password?</a>
+      <p class="signup-text">Don't have an account?<a href="{{route('register')}}" class="signup-form">Sign Up</a></p>
     </form>
 
 </div>

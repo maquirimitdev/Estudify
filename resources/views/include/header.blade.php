@@ -6,15 +6,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+        @auth
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/login">Get Started</a>
+          <a class="nav-link active" aria-current="page" href="/login">logout</a>
         </li>
+        @else
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/register">Signup</a>
         </li>
+        @endauth
       </ul>
     </div>
   </div>
