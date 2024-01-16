@@ -35,7 +35,7 @@ body {
   }
   
   .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 2px auto;
   }
   
   label {
@@ -52,6 +52,7 @@ body {
   }
   
   button {
+    margin-top: 10px;
     padding: 10px;
     border: none;
     border-radius: 5px;
@@ -79,6 +80,10 @@ body {
     padding-bottom: 16px;
     text-decoration: none;
     font-size: 14px;
+  }
+
+  .signup-form:hover{
+    text-decoration: underline;
   }
 .signup-text{
     text-align: center;
