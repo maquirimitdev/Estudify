@@ -23,11 +23,9 @@
         @endif
 
         </div>
-
-    <p>We will send a link to your email, use that link to reset password.</p>
     <form action="{{route('reset.password.post')}}" method="POST" id="resetPasswordForm" class="reset-password-form">
         @csrf
-        <input type="text"name="token" hidden value="{{token}}">
+        <input type="text"name="token" hidden value="{{$token}}">
         <h2>Reset Password</h2>
       <div class="input-group">
         <label for="resetEmail">Email</label>
