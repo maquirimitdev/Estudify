@@ -21,12 +21,12 @@ body {
   }
   
   .signup-form {
-    display: flex;
+    display:grid; 
     flex-direction: column;
   }
   
   .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 2px auto;
   }
   
   label {
@@ -58,7 +58,12 @@ body {
   .login-form{
     text-align: center;
     padding-top: 10px;
-    color: red;
+    color: blue;
+    text-decoration: none;
+  }
+  .text{
+    text-align: center;
+    padding-top: 10px;
   }
 
   .navbar {

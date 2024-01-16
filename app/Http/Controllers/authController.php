@@ -16,10 +16,16 @@ use Illuminate\Session\SessionManager;
 class authController extends Controller
 {
     function login(){
+        if(Auth::check()){
+            return redirect(route('home'));
+        }
         return view('login');
     }
 
     function register(){
+        if(Auth::check()){
+            return redirect(route('home'));
+        }
         return view('registration');
     }
 
@@ -56,7 +62,7 @@ class authController extends Controller
 
     }
 
-    function loguout(SessionManager $sessionManager){
+    function logout(SessionManager $sessionManager){
         $sessionManager->flush();
         Auth::logout();
         return redirect(route('login'));

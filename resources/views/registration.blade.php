@@ -43,7 +43,7 @@
         <input type="password" name="password_confirmation" id="confirmPassword" required>
       </div>
       <button type="submit">Sign Up</button>
-      <a href="login" class="login-form">Already have an account? Log in</a>
+      <p class="text">Already have an account?<a href="login" class="login-form">Log in</a></p>
     </form>
   </div>
 
