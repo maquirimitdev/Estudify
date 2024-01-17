@@ -6,14 +6,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-      <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
         @auth
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{route('logout')}}">logout</a>
         </li>
         @else
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            List Table
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{route('student.index')}}">Students List</a></li>
+            <li><a class="dropdown-item" href="{{route('teacher.index')}}">Teachers List</a></li>
+          </ul>
+        </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{route('login')}}">Login</a>
         </li>
@@ -22,6 +28,8 @@
         </li>
         @endauth
       </ul>
+
+      
       <span class="navbar-text">@auth{{auth()->user()->name}}@endauth
       </span>
     </div>

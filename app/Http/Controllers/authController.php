@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Unique;
 use Illuminate\Session\SessionManager;
 
 
 
 class authController extends Controller
 {
+
     function login(){
         if(Auth::check()){
             return redirect(route('home'));
@@ -53,7 +53,7 @@ class authController extends Controller
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
-        $user =User::create($data);
+        $user = User::create($data);
 
         if(!$user){
             return redirect(route('register'))->with("error", "Register failed, try again");

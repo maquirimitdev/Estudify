@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Students;
+use App\Models\Teachers;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +21,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        View::composer('studenttable', function($view){
+            $view->with('students', Students::All());
+        });
+        View::composer('teacherstable', function($view){
+            $view->with('teachers', Teachers::All());
+        });
     }
 }
