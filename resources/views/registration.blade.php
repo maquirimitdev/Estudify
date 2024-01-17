@@ -28,11 +28,11 @@
       <h2>Sign Up</h2>
       <div class="input-group">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="{{old('name')}}"required>
+        <input type="text" name="name" id="name" value="{{old('name')}}" autocomplete="off" required>
       </div>
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="{{old('email')}}" required>
+        <input type="email" name="email" id="email" value="{{old('email')}}" autocomplete="off" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>

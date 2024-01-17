@@ -31,7 +31,7 @@
             <p>We will send a link to your email, use that link to reset password.</p>
             <div class="input-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" value="{{old('email')}}" required>
+                <input type="email" name="email" id="email" value="{{old('email')}}" autocomplete="off" required>
             </div>
             <button type="submit">send password reset link</button>
         </form>

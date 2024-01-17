@@ -28,7 +28,7 @@
       <h2>Login</h2>
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email" autocomplete="off" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>

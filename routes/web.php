@@ -25,7 +25,7 @@ Route::post("/register", [authController::class, 'registerPost'])->name('registe
 Route::get("/logout", [authController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/profile', function(){
-        return "Hi";
+        return "Hello World";
     });
 });
 
