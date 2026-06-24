@@ -4,6 +4,8 @@ use App\Http\Controllers\authController;
 use App\Http\Controllers\ForgotPasswordManager;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\TeachersController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SuperAdminDashboardController;
 use App\Models\Teachers;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,31 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+    Route::middleware(['auth', 'role:SUP'])->group(function () {
+    Route::get('/superadmin-dashboard', [SuperAdminDashboardController::class, 'index'])->name('superadmin.dashboard');
+});
+
+// Route::middleware('auth')->group(function () {
+    
+//     // Main dashboard - redirects based on role
+//     // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    
+//     // Role-specific dashboards
+    
+//     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])
+//         ->middleware('admin')
+//         ->name('admin.dashboard');
+    
+//     Route::get('/teacher-dashboard', [TeacherDashboardController::class, 'index'])
+//         ->middleware('teacher')
+//         ->name('teacher.dashboard');
+    
+//     Route::get('/student-dashboard', [StudentDashboardController::class, 'index'])
+//         ->middleware('student')
+//         ->name('student.dashboard');
+// });
+
 
 Route::get('/students-list', [StudentsController::class, 'studentindex'])->name('student.index');
 Route::get('/add/student', [StudentsController::class, 'createstudent'])->name('create.student');

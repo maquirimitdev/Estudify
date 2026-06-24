@@ -15,21 +15,21 @@ use Illuminate\Session\SessionManager;
 class authController extends Controller
 {
 
-    function login(){
+    public function login(){
         if(Auth::check()){
             return redirect(route('home'));
         }
         return view('login');
     }
 
-    function register(){
+    public function register(){
         if(Auth::check()){
             return redirect(route('home'));
         }
         return view('registration');
     }
 
-    function loginPost(Request $request){
+    public function loginPost(Request $request){
 // Validate input (accept either email or username)
         $credentials = $request->validate([
             'email_or_username' => 'required|string',
@@ -46,10 +46,11 @@ class authController extends Controller
 
         Auth::login($user, $request->boolean('remember'));
 
+
         return redirect()->intended('/dashboard');
     }
 
-    function registerPost(Request $request){
+    public function registerPost(Request $request){
         $request->validate([
             'name' => 'required|min:3|max:50',
             'email' => ['required', 'email', Rule::unique('users', 'email')],
@@ -70,7 +71,7 @@ class authController extends Controller
 
     }
 
-    function logout(SessionManager $sessionManager){
+    public function logout(SessionManager $sessionManager){
         $sessionManager->flush();
         Auth::logout();
         return redirect(route('login'));

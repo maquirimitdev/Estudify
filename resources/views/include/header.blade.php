@@ -1,9 +1,7 @@
-
-<!-- IMPROVED HEADER -->
 <nav class="navbar navbar-expand-lg modern-navbar">
   <div class="container-fluid">
     <!-- Logo -->
-    <a class="navbar-brand" href="{{ route('home') }}">📚 Estudify</a>
+    <a class="navbar-brand" id="Logo_Name" href="{{ route('home') }}">📚 Estudify</a>
     
     <!-- Mobile Toggle -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +21,25 @@
       
       <!-- MIDDLE: Role-Based Navigation -->
       @auth
-        @if(auth()->user()->isAdmin())
+        @if(auth()->user()->isSuperAdmin())
+        <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                  📊 Dashboard
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="">Overview</a></li>
+                  <li><hr></li>
+                  <li><a class="dropdown-item" href="">Admin</a></li>
+                  <li><a class="dropdown-item" href="">Students</a></li>
+                  <li><a class="dropdown-item" href="">Teachers</a></li>
+                  <li><a class="dropdown-item" href="">Classes</a></li>
+                  <li><hr></li>
+                  <li><a class="dropdown-item" href="">Reports</a></li>
+                </ul>
+              </li>
+            </ul>
+        @elseif(auth()->user()->isAdmin())
           <!-- Admin Menu -->
           <ul class="navbar-nav">
             <li class="nav-item dropdown">
@@ -31,13 +47,13 @@
                 📊 Dashboard
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ route('dashboard') }}">Overview</a></li>
+                <li><a class="dropdown-item" href="">Overview</a></li>
                 <li><hr></li>
-                <li><a class="dropdown-item" href="{{ route('student.index') }}">Students</a></li>
-                <li><a class="dropdown-item" href="{{ route('teacher.index') }}">Teachers</a></li>
-                <li><a class="dropdown-item" href="{{ route('classes.index') }}">Classes</a></li>
+                <li><a class="dropdown-item" href="">Students</a></li>
+                <li><a class="dropdown-item" href="">Teachers</a></li>
+                <li><a class="dropdown-item" href="">Classes</a></li>
                 <li><hr></li>
-                <li><a class="dropdown-item" href="{{ route('reports') }}">Reports</a></li>
+                <li><a class="dropdown-item" href=">Reports</a></li>
               </ul>
             </li>
           </ul>
@@ -57,7 +73,7 @@
         @auth
           <!-- Notifications -->
           <li class="nav-item">
-            <a class="nav-link position-relative" href="{{ route('notifications') }}">
+            <a class="nav-link position-relative" href=">
               🔔 Notifications
               <span class="badge badge-danger">3</span>
             </a>
@@ -65,7 +81,7 @@
           
           <!-- Messages -->
           <li class="nav-item">
-            <a class="nav-link position-relative" href="{{ route('messages') }}">
+            <a class="nav-link position-relative" href="">
               💬 Messages
               <span class="badge badge-danger">5</span>
             </a>
@@ -83,9 +99,9 @@
               👤 {{ auth()->user()->name }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-              <li><a class="dropdown-item" href="{{ route('settings') }}">Settings</a></li>
-              <li><a class="dropdown-item" href="{{ route('change-password') }}">Change Password</a></li>
+              <li><a class="dropdown-item" href="">Profile</a></li>
+              <li><a class="dropdown-item" href="">Settings</a></li>
+              <li><a class="dropdown-item" href="">Change Password</a></li>
               <li><hr></li>
               <li>
                 <form method="POST" action="{{ route('logout') }}">

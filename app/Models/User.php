@@ -28,6 +28,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'user_type',
+        'is_active',
     ];
 
     /**
@@ -48,24 +50,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean',
     ];
-
-    public function enableTwoFactorAuth() {
-        $this->two_factor_secret = encrypt(Google2FA::generateSecretKey());
-        $this->two_factor_backup_codes = json_encode($this->generateBackupCodes());
-        $this->save();
-    }
-    
-    public function verifyTwoFactorCode($code) {
-        return Google2FA::verifyKey($this->two_factor_secret, $code);
-    }
-
-    public static function findByEmailOrUsername($emailOrUsername)
-    {
-        return static::where('email', $emailOrUsername)
-                     ->orWhere('username', $emailOrUsername)
-                     ->first();
-    }
 
     public function isSuperAdmin(): bool {
         return $this->user_type === self::SUPERADMIN;
@@ -90,6 +76,7 @@ class User extends Authenticatable
     public function canManageUsers(): bool {
         return $this->isSuperAdmin() || $this->isAdmin();
     }
+    
     
     // Helper: Check if user can view students
     public function canViewStudents(): bool {
@@ -131,5 +118,23 @@ class User extends Authenticatable
             return $this->parent->contact_number;
         }
         return null;
+    }
+
+    
+    public function enableTwoFactorAuth() {
+        $this->two_factor_secret = encrypt(Google2FA::generateSecretKey());
+        $this->two_factor_backup_codes = json_encode($this->generateBackupCodes());
+        $this->save();
+    }
+    
+    public function verifyTwoFactorCode($code) {
+        return Google2FA::verifyKey($this->two_factor_secret, $code);
+    }
+
+    public static function findByEmailOrUsername($emailOrUsername)
+    {
+        return static::where('email', $emailOrUsername)
+                     ->orWhere('username', $emailOrUsername)
+                     ->first();
     }
 }

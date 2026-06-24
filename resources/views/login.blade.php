@@ -178,7 +178,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login.post') }}">
             @csrf
 
             <!-- Email or Username Field -->
@@ -219,7 +219,7 @@
                     <input type="checkbox" name="remember" value="1">
                     Remember me
                 </label>
-                <a href="" class="forgot-password">Forgot password?</a>
+                <a href="{{ route('forget.password') }}" class="forgot-password">Forgot password?</a>
             </div>
 
             <!-- Login Button -->
