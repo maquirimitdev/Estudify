@@ -1,53 +1,106 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<!-- IMPROVED HEADER -->
+<nav class="navbar navbar-expand-lg modern-navbar">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ route('home') }}">Management</a>
+    <!-- Logo -->
+    <a class="navbar-brand" href="{{ route('home') }}">📚 Estudify</a>
+    
+    <!-- Mobile Toggle -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarNav">
+      
+      <!-- LEFT: Public Navigation -->
       <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link text-white" href="{{ route('home') }}">Home</a>
-        </li>
-        @auth
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Manage Table
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ route('student.index') }}">Students List</a></li>
-            <li><a class="dropdown-item" href="{{ route('teacher.index') }}">Teachers List</a></li>
-          </ul>
-        </li>
-        @endauth
+        <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+        @guest
+          <li><a class="nav-link" href="#features">Features</a></li>
+          <li><a class="nav-link" href="#contact">Contact</a></li>
+        @endguest
       </ul>
-      <ul class="navbar-nav">
+      
+      <!-- MIDDLE: Role-Based Navigation -->
+      @auth
+        @if(auth()->user()->isAdmin())
+          <!-- Admin Menu -->
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                📊 Dashboard
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ route('dashboard') }}">Overview</a></li>
+                <li><hr></li>
+                <li><a class="dropdown-item" href="{{ route('student.index') }}">Students</a></li>
+                <li><a class="dropdown-item" href="{{ route('teacher.index') }}">Teachers</a></li>
+                <li><a class="dropdown-item" href="{{ route('classes.index') }}">Classes</a></li>
+                <li><hr></li>
+                <li><a class="dropdown-item" href="{{ route('reports') }}">Reports</a></li>
+              </ul>
+            </li>
+          </ul>
+        @elseif(auth()->user()->isTeacher())
+          <!-- Teacher Menu -->
+          <ul class="navbar-nav">
+            <li><a class="nav-link" href="{{ route('dashboard') }}">📊 Dashboard</a></li>
+            <li><a class="nav-link" href="{{ route('my-classes') }}">📚 Classes</a></li>
+            <li><a class="nav-link" href="{{ route('grades') }}">📝 Grades</a></li>
+          </ul>
+        @endif
+      @endauth
+      
+      <!-- RIGHT: Notifications & User Menu -->
+      <ul class="navbar-nav ms-auto">
+        
         @auth
-        <li class="nav-item">
-           <a class="nav-link text-white" href="{{ route('home') }}">Dashboard</a>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ auth()->user()->name }}
+          <!-- Notifications -->
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="{{ route('notifications') }}">
+              🔔 Notifications
+              <span class="badge badge-danger">3</span>
             </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ route('home') }}">Profile</a></li>
+          </li>
+          
+          <!-- Messages -->
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="{{ route('messages') }}">
+              💬 Messages
+              <span class="badge badge-danger">5</span>
+            </a>
+          </li>
+          
+          <!-- Search (on desktop) -->
+          <li class="nav-item d-none d-lg-block">
+            <input type="search" class="nav-search" placeholder="Search...">
+          </li>
+          
+          <!-- User Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle user-avatar" href="#" 
+               data-bs-toggle="dropdown">
+              👤 {{ auth()->user()->name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+              <li><a class="dropdown-item" href="{{ route('settings') }}">Settings</a></li>
+              <li><a class="dropdown-item" href="{{ route('change-password') }}">Change Password</a></li>
+              <li><hr></li>
               <li>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                <form method="POST" action="{{ route('logout') }}">
                   @csrf
                   <button type="submit" class="dropdown-item">Logout</button>
                 </form>
               </li>
             </ul>
           </li>
-        </li>
         @else
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('login') }}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('register') }}">Signup</a>
-        </li>
+          <!-- Guest Auth Buttons -->
+          <li><a class="nav-link btn-login" href="{{ route('login') }}">Login</a></li>
+          <li><a class="nav-link btn-signup" href="{{ route('register') }}">Sign Up</a></li>
         @endauth
+        
       </ul>
     </div>
   </div>

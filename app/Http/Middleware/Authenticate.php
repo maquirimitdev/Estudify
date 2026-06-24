@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 
 class Authenticate extends Middleware
 {
@@ -15,3 +17,11 @@ class Authenticate extends Middleware
         return $request->expectsJson() ? null : route('login');
     }
 }
+
+// Redirect to MFA verification if enabled
+Route::middleware('auth')->get('/verify-mfa', function () {
+    if (auth()->user()->two_factor_enabled && !session('mfa_verified')) {
+        return view('auth.verify-mfa');
+    }
+    return redirect('/dashboard');
+});

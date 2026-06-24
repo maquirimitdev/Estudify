@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('age');
-            $table->string('adress');
-            $table->string('department');
+            $table->foreignId('user_id')->unique()->constrained('users')->onDelete('cascade');
+            $table->string('contact_number')->nullable();
+            $table->string('address')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('department')->nullable();
+            $table->string('qualification')->nullable();
+            $table->date('hire_date')->nullable();
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +31,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('teachers');
-
     }
 };

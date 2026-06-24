@@ -30,29 +30,37 @@ class authController extends Controller
     }
 
     function loginPost(Request $request){
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
+// Validate input (accept either email or username)
+        $credentials = $request->validate([
+            'email_or_username' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
-        
-        if(Auth::attempt($credentials)){
-            return redirect()->intended(route('home'));
+        $user = User::findByEmailOrUsername($credentials['email_or_username']);
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors([
+                'email_or_username' => 'Invalid credentials',
+            ])->onlyInput('email_or_username');
         }
-        return redirect(route('login'))->with("error", "Invalid Credentials");
+
+        Auth::login($user, $request->boolean('remember'));
+
+        return redirect()->intended('/dashboard');
     }
 
     function registerPost(Request $request){
         $request->validate([
             'name' => 'required|min:3|max:50',
             'email' => ['required', 'email', Rule::unique('users', 'email')],
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8',
+            'username' => ['required', 'string', 'max:255', 'min:4', Rule::unique('users', 'username')],
         ]); 
 
         $data['name'] = $request->name;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
+        $data['username'] = $request->username;
         $user = User::create($data);
 
         if(!$user){
