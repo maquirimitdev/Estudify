@@ -6,6 +6,7 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SuperAdminDashboardController;
+use App\Http\Controllers\SuperCreateUserController;
 use App\Models\Teachers;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,19 @@ Route::get('/', function () {
 })->name('home');
 
     Route::middleware(['auth', 'role:SUP'])->group(function () {
-    Route::get('/superadmin-dashboard', [SuperAdminDashboardController::class, 'index'])->name('superadmin.dashboard');
+    Route::get('/superadmin/dashboard', [SuperAdminDashboardController::class, 'index'])->name('superadmin.dashboard');
+    Route::get('/superadmin/user-table/{role}', [SuperCreateUserController::class, 'roleTable'])
+        ->name('superadmin.role_table');
+    Route::get('/superadmin/user-table/{role}/create', [SuperCreateUserController::class, 'createUser'])
+        ->name('superadmin.create_user');
+    Route::post('/superadmin/user-table/{role}', [SuperCreateUserController::class, 'storeUser'])
+        ->name('superadmin.store_user');
+    Route::get('/superadmin/user-table/{user}/edit', [SuperCreateUserController::class, 'editUser'])
+        ->name('superadmin.edit_user');
+    Route::put('/superadmin/user-table/{user}', [SuperCreateUserController::class, 'updateUser'])
+        ->name('superadmin.update_user');
+    Route::delete('/superadmin/user-table/{user}', [SuperCreateUserController::class, 'deleteUser'])
+        ->name('superadmin.delete_user');
 });
 
 // Route::middleware('auth')->group(function () {

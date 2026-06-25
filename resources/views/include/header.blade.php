@@ -28,11 +28,12 @@
                   📊 Dashboard
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="">Overview</a></li>
+                  <li><a class="dropdown-item" href="{{ route('superadmin.dashboard') }}">Overview</a></li>
                   <li><hr></li>
-                  <li><a class="dropdown-item" href="">Admin</a></li>
-                  <li><a class="dropdown-item" href="">Students</a></li>
-                  <li><a class="dropdown-item" href="">Teachers</a></li>
+                  <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'ADM']) }}">Admin</a></li>
+                  <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'STU']) }}">Students</a></li>
+                  <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'TCH']) }}">Teachers</a></li>
+                  <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'PAR']) }}">Parents</a></li>
                   <li><a class="dropdown-item" href="">Classes</a></li>
                   <li><hr></li>
                   <li><a class="dropdown-item" href="">Reports</a></li>
@@ -53,7 +54,7 @@
                 <li><a class="dropdown-item" href="">Teachers</a></li>
                 <li><a class="dropdown-item" href="">Classes</a></li>
                 <li><hr></li>
-                <li><a class="dropdown-item" href=">Reports</a></li>
+                <li><a class="dropdown-item" href="">Reports</a></li>
               </ul>
             </li>
           </ul>
@@ -73,7 +74,7 @@
         @auth
           <!-- Notifications -->
           <li class="nav-item">
-            <a class="nav-link position-relative" href=">
+            <a class="nav-link position-relative" href="">
               🔔 Notifications
               <span class="badge badge-danger">3</span>
             </a>
@@ -96,7 +97,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle user-avatar" href="#" 
                data-bs-toggle="dropdown">
-              👤 {{ auth()->user()->name }}
+              👤 {{ auth()->user()->username }}
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" href="">Profile</a></li>

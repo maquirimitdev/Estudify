@@ -217,7 +217,7 @@ button, .btn {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     transition: all 0.3s ease;
-    margin: 0.5rem;
+    margin: 1rem;
 }
 
 .card:hover {
