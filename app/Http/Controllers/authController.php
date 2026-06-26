@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\BruteForceProtection;
+use App\Services\CaptchaService;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,16 +12,32 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Session\SessionManager;
 
-
-
 class authController extends Controller
 {
+    protected $bruteForce;
+    protected $captcha;
+
+    public function __construct(BruteForceProtection $bruteForce, CaptchaService $captcha)
+    {
+        $this->bruteForce = $bruteForce;
+        $this->captcha = $captcha;
+    }
 
     public function login(){
         if(Auth::check()){
             return redirect(route('home'));
         }
-        return view('login');
+
+        $ip = request()->ip();
+        $shouldShowCaptcha = $this->bruteForce->shouldShowCaptcha($ip);
+        
+        if ($shouldShowCaptcha && !session()->has('captcha_question')) {
+            $this->captcha->generateCaptcha();
+        }
+
+        return view('login', [
+            'shouldShowCaptcha' => $shouldShowCaptcha,
+        ]);
     }
 
     public function register(){
@@ -30,24 +48,57 @@ class authController extends Controller
     }
 
     public function loginPost(Request $request){
-// Validate input (accept either email or username)
-        $credentials = $request->validate([
-            'email_or_username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        $ip = $request->ip();
+        
+        // Check if user is locked out
+        if ($this->bruteForce->isLockedOut($ip)) {
+            return back()->withErrors([
+                'email_or_username' => 'Too many login attempts. Please try again in 15 minutes.',
+            ])->onlyInput('email_or_username');
+        }
 
+        // Check if CAPTCHA is required
+        if ($this->bruteForce->shouldShowCaptcha($ip)) {
+            $request->validate([
+                'email_or_username' => 'required|string',
+                'password' => 'required|string',
+                'captcha_answer' => 'required|string',
+            ]);
+
+            if (!$this->captcha->verifyCaptcha($request->input('captcha_answer'))) {
+                $this->bruteForce->incrementAttempts($ip);
+                return back()->withErrors([
+                    'captcha_answer' => 'Incorrect CAPTCHA answer.',
+                ])->onlyInput('email_or_username');
+            }
+        } else {
+            $request->validate([
+                'email_or_username' => 'required|string',
+                'password' => 'required|string',
+            ]);
+        }
+
+        $credentials = $request->only('email_or_username', 'password');
         $user = User::findByEmailOrUsername($credentials['email_or_username']);
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            $this->bruteForce->incrementAttempts($ip);
             return back()->withErrors([
                 'email_or_username' => 'Invalid credentials',
             ])->onlyInput('email_or_username');
         }
 
+        if (!$user->is_active) {
+            return back()->withErrors([
+                'email_or_username' => 'Your account is inactive. Contact an administrator.',
+            ])->onlyInput('email_or_username');
+        }
+
+        // Reset attempts on successful login
+        $this->bruteForce->resetAttempts($ip);
         Auth::login($user, $request->boolean('remember'));
 
-
-        return redirect()->intended('/dashboard');
+        return redirect()->intended(route('dashboard'));
     }
 
     public function registerPost(Request $request){
@@ -74,6 +125,6 @@ class authController extends Controller
     public function logout(SessionManager $sessionManager){
         $sessionManager->flush();
         Auth::logout();
-        return redirect(route('login'));
+        return redirect(route('login'))->with("success","You have been logged out.");
     }
 }

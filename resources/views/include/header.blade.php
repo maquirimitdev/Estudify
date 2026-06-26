@@ -28,7 +28,7 @@
                   📊 Dashboard
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ route('superadmin.dashboard') }}">Overview</a></li>
+                  <li><a class="dropdown-item" href="">Overview</a></li>
                   <li><hr></li>
                   <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'ADM']) }}">Admin</a></li>
                   <li><a class="dropdown-item" href="{{ route('superadmin.role_table', ['role' => 'STU']) }}">Students</a></li>
@@ -104,12 +104,7 @@
               <li><a class="dropdown-item" href="">Settings</a></li>
               <li><a class="dropdown-item" href="">Change Password</a></li>
               <li><hr></li>
-              <li>
-                <form method="POST" action="{{ route('logout') }}">
-                  @csrf
-                  <button type="submit" class="dropdown-item">Logout</button>
-                </form>
-              </li>
+              <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
             </ul>
           </li>
         @else

@@ -30,6 +30,27 @@ class SuperCreateUserController extends Controller
         };
     }
 
+    protected function generateUniqueUsername(string $name): string
+    {
+        // Split name into parts
+        $nameParts = explode(' ', trim($name));
+        
+        // Create base username with dot separator
+        $baseUsername = strtolower(implode('.', $nameParts));
+        $baseUsername = preg_replace('/[^a-z0-9.]/', '', $baseUsername);
+
+        $username = $baseUsername;
+        $counter = 1;
+
+        // Check if username already exists, append number if it does
+        while (User::where('username', $username)->exists()) {
+            $username = $baseUsername . $counter;
+            $counter++;
+        }
+
+        return $username;
+    }
+
     public function createUser(string $role)
     {
         abort_if(!in_array($role, $this->validRoles()), 404);
@@ -47,21 +68,22 @@ class SuperCreateUserController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:50',
             'email' => 'required|email|unique:users,email',
-            'username' => 'required|string|min:4|max:255|unique:users,username',
             'password' => 'required|string|confirmed|min:8',
         ]);
+
+        $username = $this->generateUniqueUsername($request->input('name'));
 
         User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'username' => $request->input('username'),
+            'username' => $username,
             'password' => bcrypt($request->input('password')),
             'user_type' => $role,
             'is_active' => true,
         ]);
 
         return redirect()->route('superadmin.role_table', ['role' => $role])
-            ->with('success', $this->roleLabel($role) . ' account created successfully.');
+            ->with('success', $this->roleLabel($role) . ' account created successfully (username: ' . $username . ').');
     }
 
     public function editUser(User $user)

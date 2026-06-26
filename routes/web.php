@@ -41,6 +41,14 @@ Route::get('/', function () {
         ->name('superadmin.delete_user');
 });
 
+Route::middleware(['auth', 'role:SUP'])->group(function () {
+    Route::get('/superadmin/dashboard', [SuperAdminDashboardController::class, 'index'])->name('admin.dashboard');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
 // Route::middleware('auth')->group(function () {
     
 //     // Main dashboard - redirects based on role

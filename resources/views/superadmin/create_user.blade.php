@@ -26,14 +26,7 @@
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-            </div>
-
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input id="username" type="text" name="username" value="{{ old('username') }}" class="form-control @error('username') is-invalid @enderror" required>
-                @error('username')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <div class="form-text">A unique username will be generated automatically from the name.</div>
             </div>
 
             <div class="mb-3">
